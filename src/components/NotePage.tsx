@@ -6,8 +6,11 @@ import { customAlphabet, nanoid } from "nanoid";
 
 export function NotePage() {
   const { foo } = useParams();
+  const [btnText,setBtnText] = useState("Copy Text");
   const navigate = useNavigate();
   let readOnly: boolean = false;
+
+  let copyTextValue: string = "Copy Text";
 
   const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',5);
 
@@ -26,10 +29,14 @@ export function NotePage() {
         break;
     }
   }
-  if(textAreaValue=="")
-  {
-    // window.location.href = "/";
-    navigate("/home",{replace: true});
+
+  function copyText(){
+    setBtnText("Copied!");
+    console.log("clicked!")
+    navigator.clipboard.writeText(textAreaValue);
+    setTimeout(()=>{
+        setBtnText("Copy Text");
+    },200);
   }
 
   function displayNote():void {
@@ -56,7 +63,7 @@ export function NotePage() {
           Create notes and share using small easy to type links
         </div>
       </div>
-      <div className="mt-5">
+      <div className="mt-3">
         <textarea
           onChange={(e) => {
             textAreaValue = e.target.value;
@@ -70,18 +77,19 @@ export function NotePage() {
       <div className="flex justify-between">
         <div>
           <button
-            // disabled
+            disabled={readOnly}
             onClick={displayNote}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             Generate URL
           </button>
         </div>
         <div>
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Copy Link
+          <button onClick={copyText} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            {btnText}
           </button>
         </div>
+        
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ function App() {
   return (
     <>
     <BrowserRouter>
-    <HomePage/>
+    {/* <HomePage/> */}
     <Routes>
       <Route path='/:foo' element={<NotePage/>}/>
       <Route path='*' element={<NotePage/>}/>
